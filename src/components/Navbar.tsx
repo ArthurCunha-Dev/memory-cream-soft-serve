@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-[100] transition-smooth ${
-        scrolled ? "bg-background/90 backdrop-blur-md shadow-card" : "bg-transparent"
+        scrolled ? "bg-background/90 backdrop-blur-md shadow-card" : "bg-background"
       }`}
     >
       <div className="container flex items-center justify-between h-20">
