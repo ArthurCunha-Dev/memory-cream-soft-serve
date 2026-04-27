@@ -51,7 +51,7 @@ const Navbar = () => {
 
         <div className="hidden md:block">
           <Button variant="hero" size="lg" asChild>
-            <a href="#contato">Pedir Orçamento</a>
+            <a href="#contato">Pedir Avaliação</a>
           </Button>
         </div>
 
