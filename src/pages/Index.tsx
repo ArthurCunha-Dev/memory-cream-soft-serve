@@ -408,119 +408,152 @@ const Index = () => {
       </section>
 
       {/* CONTATO */}
-      <section id="contato" className="py-24 bg-background">
-        <div className="container max-w-3xl">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
-              Vamos levar essa alegria para seu evento?
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Preencha o formulário abaixo e receba seu orçamento personalizado.
-            </p>
-          </div>
-          <form
-            onSubmit={onSubmit}
-            className="bg-card rounded-3xl p-8 md:p-10 shadow-elegant space-y-5"
+<section id="contato" className="py-24 bg-background">
+  <div className="container max-w-3xl">
+    <div className="text-center mb-12">
+      <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+        Vamos levar essa alegria para seu evento?
+      </h2>
+      <p className="text-lg text-muted-foreground">
+        Preencha o formulário abaixo e receba seu orçamento personalizado.
+      </p>
+    </div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        // Validação de Data no Submit (Double check)
+        const selectedDate = new Date(form.date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (selectedDate <= today) {
+          alert("Por favor, selecione uma data futura para o evento.");
+          return;
+        }
+        
+        onSubmit(e);
+      }}
+      className="bg-card rounded-3xl p-8 md:p-10 shadow-elegant space-y-5"
+    >
+      <div className="grid md:grid-cols-2 gap-5">
+        <Field label="Nome completo" required>
+          <input
+            required
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className="form-input"
+          />
+        </Field>
+        
+        {/* WHATSAPP COM MÁSCARA */}
+        <Field label="WhatsApp" required>
+          <input
+            required
+            placeholder="(00) 00000-0000"
+            value={form.whatsapp}
+            onChange={(e) => setForm({ ...form, whatsapp: maskWhatsApp(e.target.value) })}
+            className="form-input"
+          />
+        </Field>
+      </div>
+
+      <Field label="E-mail" required>
+        <input
+          type="email"
+          required
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          className="form-input"
+        />
+      </Field>
+
+      <div className="grid md:grid-cols-2 gap-5">
+        <Field label="Tipo de evento" required>
+          <select
+            required
+            value={form.eventType}
+            onChange={(e) => setForm({ ...form, eventType: e.target.value })}
+            className="form-input"
           >
-            <div className="grid md:grid-cols-2 gap-5">
-              <Field label="Nome completo" required>
-                <input
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="form-input"
-                />
-              </Field>
-              <Field label="WhatsApp" required>
-                <input
-                  required
-                  value={form.whatsapp}
-                  onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-                  className="form-input"
-                />
-              </Field>
-            </div>
-            <Field label="E-mail" required>
-              <input
-                type="email"
-                required
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="form-input"
-              />
-            </Field>
-            <div className="grid md:grid-cols-2 gap-5">
-              <Field label="Tipo de evento" required>
-                <select
-                  required
-                  value={form.eventType}
-                  onChange={(e) => setForm({ ...form, eventType: e.target.value })}
-                  className="form-input"
-                >
-                  <option value="">Selecione...</option>
-                  <option>Aniversário</option>
-                  <option>Casamento</option>
-                  <option>Corporativo</option>
-                  <option>Festa Infantil</option>
-                  <option>Debutante</option>
-                  <option>Feira / Evento Empresarial</option>
-                  <option>Inauguração</option>
-                  <option>Outro</option>
-                </select>
-              </Field>
-              <Field label="Data do evento" required>
-                <input
-                  type="date"
-                  required
-                  value={form.date}
-                  onChange={(e) => setForm({ ...form, date: e.target.value })}
-                  className="form-input"
-                />
-              </Field>
-            </div>
-            <div className="grid md:grid-cols-2 gap-5">
-              <Field label="Horário de início">
-                <select
-                  value={form.time}
-                  onChange={(e) => setForm({ ...form, time: e.target.value })}
-                  className="form-input"
-                >
-                  <option value="">Selecione...</option>
-                  {Array.from({ length: 15 }, (_, i) => 8 + i).map((h) => (
-                    <option key={h}>{String(h).padStart(2, "0")}:00</option>
-                  ))}
-                </select>
-              </Field>
-              <Field label="Quantidade de convidados">
-                <input
-                  type="number"
-                  value={form.guests}
-                  onChange={(e) => setForm({ ...form, guests: e.target.value })}
-                  className="form-input"
-                />
-              </Field>
-            </div>
-            <Field label="CEP do local do evento">
-              <input
-                value={form.cep}
-                onChange={(e) => setForm({ ...form, cep: e.target.value })}
-                className="form-input"
-              />
-            </Field>
-            <Field label="Observações">
-              <textarea
-                rows={4}
-                value={form.notes}
-                onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                className="form-input resize-none"
-              />
-            </Field>
-            <Button type="submit" variant="hero" size="xl" className="w-full">
-              Solicitar Proposta
-            </Button>
-          </form>
-        </div>
-      </section>
+            <option value="">Selecione...</option>
+            <option>Aniversário</option>
+            <option>Casamento</option>
+            <option>Corporativo</option>
+            <option>Festa Infantil</option>
+            <option>Debutante</option>
+            <option>Feira / Evento Empresarial</option>
+            <option>Inauguração</option>
+            <option>Outro</option>
+          </select>
+        </Field>
+
+        {/* DATA MÍNIMA (BLOQUEIA DATAS PASSADAS NO CALENDÁRIO) */}
+        <Field label="Data do evento" required>
+          <input
+            type="date"
+            required
+            min={new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split("T")[0]}
+            value={form.date}
+            onChange={(e) => setForm({ ...form, date: e.target.value })}
+            className="form-input"
+          />
+        </Field>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-5">
+        <Field label="Horário de início">
+          <select
+            value={form.time}
+            onChange={(e) => setForm({ ...form, time: e.target.value })}
+            className="form-input"
+          >
+            <option value="">Selecione...</option>
+            {Array.from({ length: 15 }, (_, i) => 8 + i).map((h) => (
+              <option key={h}>{String(h).padStart(2, "0")}:00</option>
+            ))}
+          </select>
+        </Field>
+
+        {/* QUANTIDADE MÍNIMA 1 */}
+        <Field label="Quantidade de convidados">
+          <input
+            type="number"
+            min="1"
+            value={form.guests}
+            onChange={(e) => {
+              const val = parseInt(e.target.value);
+              setForm({ ...form, guests: val < 1 ? 1 : e.target.value });
+            }}
+            className="form-input"
+          />
+        </Field>
+      </div>
+
+      {/* CEP COM MÁSCARA */}
+      <Field label="CEP do local do evento">
+        <input
+          placeholder="00000-000"
+          value={form.cep}
+          onChange={(e) => setForm({ ...form, cep: maskCEP(e.target.value) })}
+          className="form-input"
+        />
+      </Field>
+
+      <Field label="Observações">
+        <textarea
+          rows={4}
+          value={form.notes}
+          onChange={(e) => setForm({ ...form, notes: e.target.value })}
+          className="form-input resize-none"
+        />
+      </Field>
+
+      <Button type="submit" variant="hero" size="xl" className="w-full">
+        Solicitar Proposta
+      </Button>
+    </form>
+  </div>
+</section>
 
       {/* FOOTER */}
       <footer className="py-12 bg-foreground text-background">
@@ -575,5 +608,20 @@ const Field = ({
     {children}
   </label>
 );
+const maskWhatsApp = (value) => {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\={11})\d+?$/, "$1") // limita 11 dígitos
+    .replace(/^(\d{2})(\d)/g, "($1) $2")
+    .replace(/(\d{5})(\d)/, "$1-$2")
+    .replace(/(-\d{4})\d+?$/, "$1");
+};
+
+const maskCEP = (value) => {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{5})(\d)/, "$1-$2")
+    .replace(/(-\d{3})\d+?$/, "$1");
+};
 
 export default Index;
